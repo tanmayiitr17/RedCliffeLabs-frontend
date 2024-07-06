@@ -1,0 +1,7 @@
+.custom-carousel .slick-dots li button {
+    background-color: black;
+}
+
+.custom-carousel .slick-dots li.slick-active button {
+    background-color: black;
+}
