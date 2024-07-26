@@ -1,13 +1,23 @@
 import React from 'react';
 import { HomeOutlined, LockOutlined, MailOutlined, PhoneOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input, Select } from 'antd';
+import { Button, Form, Input, message, Select } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { register } from '../../api/auth';
 const Register = () => {
 
     const navigate = useNavigate();
 
-    const onFinish = (values) => {
+    const onFinish = async (values) => {
         console.log('Received values of form: ', values);
+        try {
+            const res = await register(values);
+            if (res) {
+                message.success("Registered successfully!");
+            }
+        } catch (err) {
+            message.error("Something went wrong. Try Again!");
+            console.log(err)
+        }
     };
 
     const onChange = (value) => {
