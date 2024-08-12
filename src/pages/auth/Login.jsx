@@ -1,13 +1,62 @@
 import React from 'react';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input, Select } from 'antd';
+import { Button, Checkbox, Form, Input, message, Select } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { login } from '../../api/auth';
+import { getAllReagents, getAllAnalyzers } from '../../api/product';
+import { useDispatch } from 'react-redux';
+import { addAnalyzers, addReagents } from '../../redux/productSlice';
+import { addUserInfo } from '../../redux/userSlice';
+
+
 const Login = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-    const onFinish = (values) => {
-        console.log('Received values of form: ', values);
+    const onFinish = async (values) => {
+        try {
+            const res = await login(values);
+            if (res) {
+                console.log("userInfo", res.data);
+                // dispatch(addUserInfo(res.data));
+                localStorage.setItem("token", res.data.accessToken);
+
+                const fetchReagents = async () => {
+                    try {
+                        const reagentsRes = await getAllReagents();
+                        if (reagentsRes) {
+                            console.log("reagentsRes", reagentsRes.data);
+                            dispatch(addReagents(reagentsRes.data));
+                        }
+                    } catch (err) {
+                        console.error("Error fetching reagents:", err);
+                    }
+                };
+
+                const fetchAnalyzers = async () => {
+                    try {
+                        const analyzersRes = await getAllAnalyzers();
+                        if (analyzersRes) {
+                            console.log("analyzers", analyzersRes.data);
+                            dispatch(addAnalyzers(analyzersRes.data));
+                        }
+                    } catch (err) {
+                        console.error("Error fetching analyzers:", err);
+                    }
+                };
+
+                // Fetch both reagents and analyzers concurrently
+                await Promise.all([fetchReagents(), fetchAnalyzers()]);
+
+                message.success("Logged in successfully!");
+                navigate("/");
+            }
+        } catch (err) {
+            console.error("Login error:", err);
+            message.error("Something went wrong. Try Again!");
+        }
     };
+
 
     const onChange = (value) => {
         console.log(`selected ${value}`);

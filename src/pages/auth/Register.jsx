@@ -3,12 +3,11 @@ import { HomeOutlined, LockOutlined, MailOutlined, PhoneOutlined, UserOutlined }
 import { Button, Form, Input, message, Select } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { register } from '../../api/auth';
-const Register = () => {
 
+const Register = () => {
     const navigate = useNavigate();
 
     const onFinish = async (values) => {
-        console.log('Received values of form: ', values);
         try {
             const res = await register(values);
             if (res) {

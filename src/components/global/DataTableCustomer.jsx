@@ -2,131 +2,39 @@ import React, { useRef, useState } from 'react';
 import { SearchOutlined } from '@ant-design/icons';
 import { Button, Input, Space, Table } from 'antd';
 import Highlighter from 'react-highlight-words';
+import { useSelector } from 'react-redux';
 
-const data = [
-    {
-        name: 'Coagulation reagents',
-        usedIn: 'Blood test',
-        stock: '250',
-    },
-    {
-        name: 'Coagulation reagents',
-        usedIn: 'Blood test',
-        stock: '250',
-    },
-    {
-        name: 'Coagulation reagents',
-        usedIn: 'Blood test',
-        stock: '250',
-    },
-    {
-        name: 'Coagulation reagents',
-        usedIn: 'Blood test',
-        stock: '250',
-    },
-    {
-        name: 'Coagulation reagents',
-        usedIn: 'Blood test',
-        stock: '250',
-    },
-    {
-        name: 'Coagulation reagents',
-        usedIn: 'Blood test',
-        stock: '250',
-    },
-    {
-        name: 'Coagulation reagents',
-        usedIn: 'Blood test',
-        stock: '250',
-    },
-    {
-        name: 'Coagulation reagents',
-        usedIn: 'Blood test',
-        stock: '250',
-    },
-    {
-        name: 'Coagulation reagents',
-        usedIn: 'Blood test',
-        stock: '250',
-    },
-    {
-        name: 'Coagulation reagents',
-        usedIn: 'Blood test',
-        stock: '250',
-    },
-    {
-        name: 'Coagulation reagents',
-        usedIn: 'Blood test',
-        stock: '250',
-    },
-    {
-        name: 'Coagulation reagents',
-        usedIn: 'Blood test',
-        stock: '250',
-    },
-    {
-        name: 'Coagulation reagents',
-        usedIn: 'Blood test',
-        stock: '250',
-    },
-    {
-        name: 'Coagulation reagents',
-        usedIn: 'Blood test',
-        stock: '250',
-    },
-    {
-        name: 'Coagulation reagents',
-        usedIn: 'Blood test',
-        stock: '250',
-    },
-    {
-        name: 'Coagulation reagents',
-        usedIn: 'Blood test',
-        stock: '250',
-    },
-    {
-        name: 'Coagulation reagents',
-        usedIn: 'Blood test',
-        stock: '250',
-    },
-    {
-        name: 'Coagulation reagents',
-        usedIn: 'Blood test',
-        stock: '250',
-    },
-    {
-        name: 'Coagulation reagents',
-        usedIn: 'Blood test',
-        stock: '250',
-    },
-    {
-        name: 'Coagulation reagents',
-        usedIn: 'Blood test',
-        stock: '250',
-    },
-    {
-        name: 'Coagulation reagents',
-        usedIn: 'Blood test',
-        stock: '250',
-    },
-    {
-        name: 'Coagulation reagents',
-        usedIn: 'Blood test',
-        stock: '250',
-    },
-    {
-        name: 'Coagulation reagents',
-        usedIn: 'Blood test',
-        stock: '250',
-    },
-    {
-        name: 'Coagulation reagents',
-        usedIn: 'Blood test',
-        stock: '250',
-    },
-]
+const DataTableCustomer = ({ setIsOpen, setRecord, title }) => {
+    let data = []
+    if (title === "Reagents") {
+        const ReagentsData = useSelector((state) => state?.product?.reagents);
+        console.log("reagents", ReagentsData);
+        data = ReagentsData?.map((item) => {
+            return {
+                id: item?._id,
+                name: item?.name,
+                usedIn: item?.usedIn,
+                stock: item?.stock,
+                pricePerItem: item?.pricePerItem,
+            };
+        });
+        console.log("data", data)
+    }
+    if (title === "Analyzers") {
+        const AnaylyzersData = useSelector((state) => state?.product?.analyzers);
+        console.log("AnaylyzersData", AnaylyzersData);
+        data = AnaylyzersData?.map((item) => {
+            return {
+                id: item?._id,
+                name: item?.name,
+                usedIn: item?.usedIn,
+                stock: item?.stock,
+                pricePerItem: item?.pricePerItem,
+            };
+        });
+        console.log("data", data)
+    }
 
-const DataTableCustomer = ({ setIsOpen, setRecord }) => {
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
     const searchInput = useRef(null);
@@ -239,14 +147,14 @@ const DataTableCustomer = ({ setIsOpen, setRecord }) => {
             title: 'Name',
             dataIndex: 'name',
             key: 'name',
-            width: '35%',
+            width: '25%',
             ...getColumnSearchProps('name'),
         },
         {
             title: 'Used In',
             dataIndex: 'usedIn',
             key: 'usedIn',
-            width: '35%',
+            width: '25%',
             ...getColumnSearchProps('usedIn'),
         },
         {
@@ -257,6 +165,11 @@ const DataTableCustomer = ({ setIsOpen, setRecord }) => {
             ...getColumnSearchProps('stock'),
             sorter: (a, b) => a.address.length - b.address.length,
             sortDirections: ['descend', 'ascend'],
+        },
+        {
+            title: 'Price (Per Piece)',
+            dataIndex: 'price',
+            width: '20%',
         },
         {
             title: 'Order Now',

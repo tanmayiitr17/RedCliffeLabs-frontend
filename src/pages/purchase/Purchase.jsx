@@ -26,6 +26,10 @@ const Purchase = ({ title }) => {
             title: 'Stock (Quantity Available)',
             dataIndex: 'stock',
         },
+        {
+            title: 'Price (Per Piece)',
+            dataIndex: 'price',
+        },
     ];
 
     const data = [
@@ -43,11 +47,11 @@ const Purchase = ({ title }) => {
                 <h1 className='text-[#fff] font-[700] text-[21px]'>ORDER NOW!</h1>
             </div>
             <div className='w-[100%] p-[5%]'>
-                <DataTableCustomer setIsOpen={setIsOpen} setRecord={setRecord} />
+                <DataTableCustomer setIsOpen={setIsOpen} setRecord={setRecord} title={title} />
             </div>
             {
                 isOpen &&
-                <Modal title={`${title === 'Reagents' ? 'Reagent' : 'Analyzer'} Details`} open={isOpen} onOk={handleOk} onCancel={handleCancel}>
+                <Modal title={`${title === 'Reagents' ? 'Reagent' : 'Analyzer'} Details`} open={isOpen} onOk={handleOk} onCancel={handleCancel} centered>
                     <Table
                         columns={columns}
                         dataSource={data}
